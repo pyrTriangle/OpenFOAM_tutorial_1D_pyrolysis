@@ -1,6 +1,6 @@
 #!/bin/sh
 
-reconstructPar
+#reconstructPar
 reconstructPar -region sampleRegion
 
 #------------------------------------------------------------------------------
