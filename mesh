@@ -7,19 +7,11 @@ cd ${0%/*} || exit 1    # run from this directory
 # Set application name
 application=`getApplication`
 
-#dir=constant/triSurface
-#transform="runApplication surfaceTransformPoints"
-#stlFile=scaled.stl
-
 runApplication blockMesh
 rm -f log.blockMesh
 
 runApplication topoSet
 rm -f log.topoSet
-
-#runApplication surfaceFeatureExtract
-
-#runApplication snappyHexMesh -overwrite
 
 runApplication extrudeToRegionMesh -overwrite
 rm -f log.extrudeToRegionMesh
