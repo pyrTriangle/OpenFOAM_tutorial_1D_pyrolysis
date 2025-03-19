@@ -1,0 +1,12 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+runApplication decomposePar -force
+rm -f log.decomposePar
+
+runApplication decomposePar -region sampleRegion
+rm -f log.decomposePar
+
+#------------------------------------------------------------------------------

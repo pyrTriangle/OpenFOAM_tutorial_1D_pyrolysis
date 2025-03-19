@@ -1,0 +1,106 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  dev                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "(rho|rhoFinal)"
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       0;
+        relTol          0;
+    };
+
+    p_rgh
+    {
+        solver              GAMG;
+        tolerance           1e-6;
+        relTol              0.01;
+        smoother            GaussSeidel;
+        cacheAgglomeration  true;
+        nCellsInCoarsestLevel   10;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+    };
+
+    p_rghFinal
+    {
+        $p_rgh;
+        relTol          0.0;
+    };
+
+    ph_rgh
+    {
+        $p_rgh;
+    }
+
+    "(U|Yi|k|h)"
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-6;
+        relTol          0.0;
+    };
+
+    "(U|Yi|k|h)Final"
+    {
+        $U;
+        tolerance       1e-6;
+        relTol          0;
+    };
+
+    Ii
+    {
+        solver              GAMG;
+        tolerance           1e-4;
+        relTol              0;
+        smoother            symGaussSeidel;
+        cacheAgglomeration  true;
+        nCellsInCoarsestLevel   10;
+        agglomerator        faceAreaPair;
+        mergeLevels         1;
+        maxIter             1;
+        nPreSweeps          0;
+        nPostSweeps         1;
+    }
+}
+
+PIMPLE
+{
+    momentumPredictor yes;
+    nOuterCorrectors  3;
+    nCorrectors       2;
+    nNonOrthogonalCorrectors 1;
+
+    hydrostaticInitialization yes;
+    nHydrostaticCorrectors 5;
+}
+
+relaxationFactors
+{
+    fields
+    {
+        ".*"            1;
+    }
+    equations
+    {
+        ".*"            1;
+    }
+}
+
+// ************************************************************************* //

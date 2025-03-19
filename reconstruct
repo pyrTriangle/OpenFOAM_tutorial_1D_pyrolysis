@@ -1,0 +1,6 @@
+#!/bin/sh
+
+reconstructPar
+reconstructPar -region sampleRegion
+
+#------------------------------------------------------------------------------

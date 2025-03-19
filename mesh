@@ -1,0 +1,29 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# Set application name
+application=`getApplication`
+
+#dir=constant/triSurface
+#transform="runApplication surfaceTransformPoints"
+#stlFile=scaled.stl
+
+runApplication blockMesh
+rm -f log.blockMesh
+
+runApplication topoSet
+rm -f log.topoSet
+
+#runApplication surfaceFeatureExtract
+
+#runApplication snappyHexMesh -overwrite
+
+runApplication extrudeToRegionMesh -overwrite
+rm -f log.extrudeToRegionMesh
+
+cp 0/ph_rgh-orig 0/ph_rgh
+
+# ----------------------------------------------------------------- end-of-file

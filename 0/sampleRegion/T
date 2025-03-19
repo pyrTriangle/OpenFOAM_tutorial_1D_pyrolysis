@@ -1,0 +1,45 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.2                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 293.;
+
+boundaryField
+{
+    sample_top
+    {
+        type            zeroGradient; // Adiabatic (no heat losses)
+/*
+        type            constHTemperature; // Convective losses with a prescribed convection coefficient h
+        Tinf            uniform 293.;
+        h               uniform 5;
+        value           uniform 293.;
+*/
+    }
+
+    region0_to_sampleRegion_sample
+    {
+        type                fixedIncidentRadiation;
+        kappaMethod         solidThermo;
+        kappa               none;
+        qrIncident          uniform 50000.; // Heat flux on the sample surface (unit: W/m2)
+        value               uniform 293.;
+    }
+}
+
+// ************************************************************************* //
